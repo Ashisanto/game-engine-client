@@ -10,7 +10,6 @@ use winit::event::WindowEvent;
 use winit::window::WindowId;
 use winit::application::ApplicationHandler;
 
-/// Returns a vertex buffer that should be rendered as `TrianglesList`.
 pub fn load_wavefront(display: &Display<WindowSurface>, data: &[u8]) -> glium::vertex::VertexBufferAny {
     #[derive(Copy, Clone)]
     struct Vertex {
@@ -168,7 +167,10 @@ impl<T: ApplicationContext + 'static> State<T> {
         visible: bool,
     ) -> Self {
         let window_attributes = winit::window::Window::default_attributes()
-            .with_title(T::WINDOW_TITLE).with_visible(visible);
+            .with_title(T::WINDOW_TITLE)
+            .with_visible(visible)
+            .with_resizable(false)
+            .with_inner_size(winit::dpi::LogicalSize::new(1366.0, 768.0));
         let config_template_builder = glutin::config::ConfigTemplateBuilder::new();
         let display_builder = glutin_winit::DisplayBuilder::new().with_window_attributes(Some(window_attributes));
 
@@ -198,8 +200,8 @@ impl<T: ApplicationContext + 'static> State<T> {
             })
         });
 
-        // Determine our framebuffer size based on the window size, or default to 800x600 if it's invisible
-        let (width, height): (u32, u32) = if visible { window.inner_size().into() } else { (800, 600) };
+        // Determine our framebuffer size based on the window size, or default to 1366x768 if it's invisible
+        let (width, height): (u32, u32) = if visible { window.inner_size().into() } else { (1366, 768) };
         let attrs = glutin::surface::SurfaceAttributesBuilder::<WindowSurface>::new().build(
             window_handle.into(),
             NonZeroU32::new(width).unwrap(),
@@ -234,20 +236,6 @@ impl<T: ApplicationContext + 'static> State<T> {
             state: None,
             visible: true,
             close_promptly: false,
-        };
-        let result = event_loop.run_app(&mut app);
-        result.unwrap();
-    }
-
-    /// Create a context and draw a single frame
-    pub fn run_once(visible: bool) {
-        let event_loop = glium::winit::event_loop::EventLoop::builder()
-            .build()
-            .expect("event loop building");
-        let mut app = App::<T> {
-            state: None,
-            visible,
-            close_promptly: true,
         };
         let result = event_loop.run_app(&mut app);
         result.unwrap();
