@@ -1,11 +1,11 @@
 #[macro_use]
 extern crate glium;
-mod support;
+mod graphic;
 
 use glium::index::PrimitiveType;
 use glium::{Display, Surface};
 use glutin::surface::WindowSurface;
-use support::{ApplicationContext, State};
+use graphic::camera::{ApplicationContext, State};
 
 #[derive(Copy, Clone)]
 struct Vertex {

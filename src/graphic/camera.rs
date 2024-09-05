@@ -174,19 +174,14 @@ impl<T: ApplicationContext + 'static> State<T> {
         let config_template_builder = glutin::config::ConfigTemplateBuilder::new();
         let display_builder = glutin_winit::DisplayBuilder::new().with_window_attributes(Some(window_attributes));
 
-        // First we create a window
         let (window, gl_config) = display_builder
             .build(event_loop, config_template_builder, |mut configs| {
-                // Just use the first configuration since we don't have any special preferences here
                 configs.next().unwrap()
             })
             .unwrap();
         let window = window.unwrap();
 
-        // Then the configuration which decides which OpenGL version we'll end up using, here we just use the default which is currently 3.3 core
-        // When this fails we'll try and create an ES context, this is mainly used on mobile devices or various ARM SBC's
-        // If you depend on features available in modern OpenGL Versions you need to request a specific, modern, version. Otherwise things will very likely fail.
-        let window_handle = window.window_handle().expect("couldn't obtain window handle");
+        let window_handle = window.window_handle().expect("Couldn't obtain window handle");
         let context_attributes = glutin::context::ContextAttributesBuilder::new().build(Some(window_handle.into()));
         let fallback_context_attributes = glutin::context::ContextAttributesBuilder::new()
             .with_context_api(glutin::context::ContextApi::Gles(None))
@@ -200,14 +195,13 @@ impl<T: ApplicationContext + 'static> State<T> {
             })
         });
 
-        // Determine our framebuffer size based on the window size, or default to 1366x768 if it's invisible
         let (width, height): (u32, u32) = if visible { window.inner_size().into() } else { (1366, 768) };
         let attrs = glutin::surface::SurfaceAttributesBuilder::<WindowSurface>::new().build(
             window_handle.into(),
             NonZeroU32::new(width).unwrap(),
             NonZeroU32::new(height).unwrap(),
         );
-        // Now we can create our surface, use it to make our context current and finally create our display
+
         let surface = unsafe { gl_config.display().create_window_surface(&gl_config, &attrs).unwrap() };
         let current_context = not_current_gl_context.unwrap().make_current(&surface).unwrap();
         let display = glium::Display::from_context_surface(current_context, surface).unwrap();
