@@ -5,15 +5,11 @@ authors = ["AIM"]
 edition = "2021"
 
 [dependencies]
-glium = "0.35.0"
-glutin = "0.32.0"
-glutin-winit = "0.5"
-raw-window-handle = "0.6.2"
-winit = "0.30.5"
 obj = { version = "0.10", features = ["genmesh"] }
 rand = "0.8"
 libc = "0.2.158"
-genmesh = "0.6"
 image = "0.25"
 ouroboros = "0.18"
 tokio = { version = "1.40.0", features = ["full"] }
+flo_draw = "0.3.1"
+flo_canvas = "0.3.1"
