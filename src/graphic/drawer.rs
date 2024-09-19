@@ -11,7 +11,7 @@ pub fn render_2d() {
         let c_width = 900.0;
 
         thread::spawn(|| {
-            play::play("./assets/music/Final Boss.mp3").unwrap();
+            play::play("./assets/music/Final Boss.ogg").unwrap();
         });
 
         // Load a file
