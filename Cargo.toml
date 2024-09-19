@@ -5,11 +5,9 @@ authors = ["AIM"]
 edition = "2021"
 
 [dependencies]
-obj = { version = "0.10", features = ["genmesh"] }
 rand = "0.8"
-libc = "0.2.158"
 image = "0.25"
-ouroboros = "0.18"
 tokio = { version = "1.40.0", features = ["full"] }
 flo_draw = "0.3.1"
 flo_canvas = "0.3.1"
+play = "0.5.3"

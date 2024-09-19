@@ -10,11 +10,15 @@ pub fn render_2d() {
         let c_height = 1400.0;
         let c_width = 900.0;
 
+        thread::spawn(|| {
+            play::play("./assets/music/Final Boss.mp3").unwrap();
+        });
+
         // Load a file
-        let fire_bytes: &[u8] = include_bytes!["../assets/animations/1.png"];
-        let char_bytes: &[u8] = include_bytes!["../assets/characters/1.png"];
+        let fire_bytes: &[u8] = include_bytes!["../../assets/animations/1.png"];
+        let char_bytes: &[u8] = include_bytes!["../../assets/characters/1.png"];
         let font_space_mono =
-            CanvasFontFace::from_slice(include_bytes!("../assets/font/SpaceMono.ttf"));
+            CanvasFontFace::from_slice(include_bytes!("../../assets/font/SpaceMono.ttf"));
 
         let animate_paths = fs::read_dir("./assets/animations");
 
@@ -49,8 +53,7 @@ pub fn render_2d() {
                 .load_texture(TextureId(0), io::Cursor::new(fire_bytes))
                 .unwrap();
 
-            gc
-                .load_texture(TextureId(1), io::Cursor::new(char_bytes))
+            gc.load_texture(TextureId(1), io::Cursor::new(char_bytes))
                 .unwrap();
 
             fire_w = w;
@@ -110,7 +113,13 @@ pub fn render_2d() {
     });
 }
 
-fn render_animate_sprit(gc: &mut Vec<Draw>, texture_id: u64, x_step: i32, step_x: f32, step_y: f32) {
+fn render_animate_sprit(
+    gc: &mut Vec<Draw>,
+    texture_id: u64,
+    x_step: i32,
+    step_x: f32,
+    step_y: f32,
+) {
     // Draw a rect...
     gc.new_path();
 
