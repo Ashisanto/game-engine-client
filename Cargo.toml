@@ -6,8 +6,9 @@ edition = "2021"
 
 [dependencies]
 rand = "0.8"
-image = "0.25"
-tokio = { version = "1.40.0", features = ["full"] }
+image = "0.25.4"
+tokio = { version = "1.41.0", features = ["full"] }
 flo_draw = "0.3.1"
 flo_canvas = "0.3.1"
 play = "0.5.3"
+bevy = "0.14.2"
